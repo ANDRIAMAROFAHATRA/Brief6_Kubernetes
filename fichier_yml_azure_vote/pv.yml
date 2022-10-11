@@ -1,0 +1,14 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: monpv
+  labels:
+    type: local
+spec:
+  storageClassName: sanstorageclass #BindingwithPVC
+  capacity:
+    storage: 1Gi
+  accessModes:
+   - ReadWriteOnce
+  hostPath:
+    path: "/pvdata"

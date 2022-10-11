@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: monpvc
+spec:
+  storageClassName: sanstorageclass #Bindin with classStorage
+  accessModes:
+  - ReadWriteOnce #test de changement
+  resources:
+    requests:
+      storage: 1Gi

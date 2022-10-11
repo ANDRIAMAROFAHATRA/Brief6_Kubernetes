@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aspnetapp
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+spec:
+  tls:
+    - secretName: secret-tls
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: azure-vote-front
+            port:
+              number: 80
+        pathType: Exact

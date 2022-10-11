@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-vote-back
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-vote-back
+  template:
+    metadata:
+      labels:
+        app: azure-vote-back
+    spec:
+      volumes:
+      - name: monstorage
+        persistentVolumeClaim:
+          claimName: monpvc # Appel du persistentclaimvolume crée dans pvc.yml
+      containers:
+      - name: azure-vote-back
+        image: redis
+        args: ["--requirepass", "$(REDIS_PWD)"]
+        env:
+        # - name: ALLOW_EMPTY_PASSWORD
+        #   value: "yes"
+        - name: REDIS_PWD
+          valueFrom:
+            secretKeyRef:
+              name: redis
+              key: REDIS_PWD  
+        ports:
+        - containerPort: 6379
+          name: redis
+        volumeMounts: #point de montage dans le pod
+        - name: monstorage #/data/monstorage
+          mountPath: "/data"
