@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: azure-vote-front
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: azure-vote-front
@@ -13,6 +13,11 @@ spec:
         app: azure-vote-front
     spec:
       containers:
+        # resources:
+        #   requests:
+        #     cpu: 250m
+        #   limits:
+        #     cpu: 500m 
       - name : azure-vote-front
         image: whujin11e/public:azure_voting_app
         env:

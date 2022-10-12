@@ -13,7 +13,7 @@ spec:
       - path: /
         backend:
           service:
-            name: azure-vote-front
+            name: azure-vote-front #votin-app-service.yml
             port:
               number: 80
         pathType: Exact
