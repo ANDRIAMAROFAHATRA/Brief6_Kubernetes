@@ -7,7 +7,7 @@
 # première boucle de 1 a 100, 5 secondes entre envoie de chaque bloc de 10 requêtes
 1..100| ForEach-Object -Parallel {
     Invoke-WebRequest -URI https://sankubernetes.simplonsanlab.space/ `
-                      -Method Post `                      -Body @{vote="Cats"} `
+                      -Method Post `                      -Body @{vote="Dogs"} `
                       -UseBasicParsing;
     Start-Sleep -Seconds 5;
 } -ThrottleLimit 10

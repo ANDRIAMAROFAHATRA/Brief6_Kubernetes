@@ -2,9 +2,13 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: sanstorageclass
-provisioner: disk.csi.azure.com
+provisioner: kubernetes.io/azure-file 
+mountOptions:
+  - dire_mode=0777
+  - file_mode=0777
 parameters:
-  skuName: Premium_LRS
-reclaimPolicy: Retain
+  skuName: Standard_LRS
+  shareName: san-file-share
+#reclaimPolicy: Retain
 #volumeBindingMode: WaitForFirstConsumer
 allowVolumeExpansion: true

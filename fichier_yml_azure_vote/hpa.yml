@@ -4,7 +4,7 @@ metadata:
   name: azure-vote-front-hpa
 spec:
   maxReplicas: 8
-  minReplicas: 3
+  minReplicas: 2
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
