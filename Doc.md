@@ -11,15 +11,16 @@ Registry : https://hub.docker.com/r/whujin11e/public
 
 
 ## 2.LE DEPLOIEMENT DANS L'ENVIRONNEMENT AZURE
-L'infrastructure est hébergé sur le Cloud Microsoft AZURE et a été déployé en utilisant le service Azure Kubernetes Service (AKS)
+L'infrastructure est hébergé sur le Cloud Microsoft AZURE et a été mis en ligne en utilisant le service Azure Kubernetes Service (AKS).
 AKS est un service managé (responsable de la surchage opérationnelle, l'administrateur est uniquement en charge de la gestion/maintenance des noeuds agents) d'orchestrateur de container basé sur le système KUBERNETES.
 
 
 L'ensemble des opérations ont été réalisé via : 
 
-- Ligne de commande AZ CLI pour deployer les ressources groupes AZURE nécéssaire.
-- Des extensions AZ CLI pour déployer le Cluster AKS et faire appels aux commandes de gestions des objets du cluster Kubernetes (kubectl). 
+- Ligne de commande AZ CLI pour deployer les deux ressources groupes AZURE nécéssaires.
+- Des extensions AZ CLI pour déployer le Cluster AKS et faire appel aux commandes de gestions des objets du cluster Kubernetes (kubectl). 
 - L'activation d'un module complémentaire  Application Gateway Ingress Controller (AGIC) pour une opération de mise en place réseau avec Azure Gateway.
+
 
 
 
@@ -66,8 +67,50 @@ api -.->node04
 ```
 
 
+Les ressources :
+* Deux groupes de ressources
+* Un Cluster AKS
+* 4 Noeuds
+* 1 Pod qui héberge une base de donnée contenant un container avec une image REDIS
+* 1 Pod qui héberge un container avec l'image de l'application de vote
+* Un Service AZURE GATEWAY
 
-## 3. LE ROUTAGE
+
+
+## 3. LE STOCKAGE 
+
+Initialement dans Docker le stockage est volatile (non-persistent si le node disparait).
+Dans cette infrastructure, une solution de fichier  à été implémenté pour la sauvegarde.
+
+```mermaid
+flowchart BT
+
+subgraph Azure
+    subgraph Node 
+    redis((Pods Redis))
+    end
+    pvc(pvc)
+    sc[/storageClass\]
+    pv(pv)
+    AF[Azure File]
+end
+
+redis <-.->pvc-.->pv
+sc <-.->pvc
+pv -.->AF
+
+```
+![](https://i.imgur.com/OmSOhfq.jpg)
+
+
+ ![](https://i.imgur.com/V2lpH80.jpg)
+
+
+
+
+
+
+## 4. LE ROUTAGE
 
 Dans cette infrastructure, les requêtes vers l'application transit via un service Azure Gateway existant. C'est-à-dire que le Cluster AKS expose une autre ressource d'un autre groupe de ressource mise en service dans AZURE via un point d'entrée Ingress.
 Avantages : 
@@ -130,11 +173,7 @@ agic<-..->podscl3
 
 
 
-## 4. LE STOCKAGE 
-Dans Kubernetes le stockage est volatile (non-persistent si le node disparait).
-Dans cette infrastructure, une solution AZURE FILE à été implémenté
 
- faire un mermaid stockage**
 
 ## 5. LES DIFFICULTES RENCONTREES 
 
